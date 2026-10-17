@@ -307,6 +307,20 @@ let data;
 try{ data = JSON.parse(store.get(KEY)); }catch(e){}
 if(!Array.isArray(data) || !data.length) data = clone(DEFAULT_DATA);
 
+function parseTime(s){
+  const m = /(\d{1,2}):(\d{2})/.exec(s); return m ? (+m[1])*60 + (+m[2]) : null;
+}
+function sortItemsByTime(items){
+  items.sort((a,b)=>{
+    const ta = parseTime(a[0]), tb = parseTime(b[0]);
+    if(ta===null && tb===null) return 0;
+    if(ta===null) return 1;
+    if(tb===null) return -1;
+    return ta - tb;
+  });
+}
+data.forEach(d=>{ if(Array.isArray(d.items)) sortItemsByTime(d.items); });
+
 let cur = 0, editing = false;
 const $ = id => document.getElementById(id);
 const app = $("app"), list = $("list"), daysEl = $("days");
@@ -391,9 +405,6 @@ function applyEditable(){
 }
 
 /* Aktueller Termin */
-function parseTime(s){
-  const m = /(\d{1,2}):(\d{2})/.exec(s); return m ? (+m[1])*60 + (+m[2]) : null;
-}
 function markNow(){
   list.querySelectorAll(".now").forEach(e=>e.classList.remove("now"));
   if(editing || data[cur].iso !== todayIso()) return;
@@ -465,6 +476,9 @@ document.addEventListener("focusout", e=>{
   if(el.classList && el.classList.contains("n")){
     const v = el.textContent.replace(/^\s*\(|\)\s*$/g,"").trim();
     el.textContent = v ? "("+v+")" : "";
+  }
+  if(editing && el.dataset && el.dataset.k==="0"){
+    sortItemsByTime(data[cur].items); save(); render();
   }
   if(el.dataset && el.dataset.f==="place" ){ $("dayPlace").textContent = data[cur].place || ""; }
 });
