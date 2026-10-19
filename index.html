@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>Campprogramm 26/T17</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -84,6 +84,11 @@ li.row.now{background:linear-gradient(90deg,var(--accent-soft),transparent);marg
 li.row.now .t{color:var(--accent);font-weight:600}
 li.row.now + li.row{border-top-color:transparent}
 
+.fab{position:fixed;z-index:20;right:calc(20px + env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));
+  width:56px;height:56px;background:var(--surface);color:var(--ink);box-shadow:0 4px 16px rgba(0,0,0,.25),inset 0 0 0 1px var(--line)}
+.fab:hover{background:var(--surface);color:var(--ink)}
+.fab svg{width:24px;height:24px}
+.editing [contenteditable]{font-size:16px}
 /* Bearbeiten */
 .editing [contenteditable]{
   background:var(--surface);border-radius:8px;padding:2px 6px;margin:-2px -6px;min-height:1.4em;display:block;
@@ -124,9 +129,6 @@ li.row.now + li.row{border-top-color:transparent}
     <div class="top">
       <h1>Campprogramm 26/T17</h1>
       <div class="tools">
-        <button class="icon" id="editBtn" aria-pressed="false" aria-label="Bearbeiten">
-          <svg viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg>
-        </button>
         <button class="icon" id="themeBtn" aria-label="Design wechseln">
           <svg viewBox="0 0 24 24" id="themeIcon"></svg>
         </button>
@@ -157,6 +159,9 @@ li.row.now + li.row{border-top-color:transparent}
 </div>
 <div id="toast"></div>
 
+<button class="icon fab" id="editBtn" aria-pressed="false" aria-label="Bearbeiten">
+  <svg viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg>
+</button>
 <script>
 const DEFAULT_DATA = [
  {iso:"2026-10-17",name:"Samstag",date:"17.10.2026",place:"",items:[
